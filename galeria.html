@@ -254,139 +254,38 @@
     <button class="filter-btn" data-filter="egyedi">Egyedi dizájn</button>
   </div>
 
-  <!-- GALLERY GRID -->
-  <!--
-    KÉPEK HOZZÁADÁSA:
-    Tedd a képeket egy "kepek/" mappába.
-    Módosítsd a .gallery-ph elemeket <img> tagre:
-    <img src="kepek/toll1.jpg" alt="leírás" />
-    A data-category-t tartsd meg a szűréshez.
-  -->
   <div class="gallery-grid" id="galleryGrid">
 
-    <div class="gallery-item" data-category="gravir" onclick="openLightbox(this)">
-      <div class="gallery-ph" style="height:320px;">
-        <span class="ph-icon">✍️</span>
-        <span>Fotó: toll1.jpg</span>
-      </div>
-      <div class="overlay">
-        <div class="overlay-title">Monogramos Barrel</div>
-        <div class="overlay-tag">Gravírozás</div>
-      </div>
-      <div class="overlay-zoom">🔍</div>
-      <span style="display:none" class="lb-title">Monogramos Barrel</span>
-      <span style="display:none" class="lb-cat">Gravírozás</span>
-    </div>
-
-    <div class="gallery-item" data-category="wolfram" onclick="openLightbox(this)">
-      <div class="gallery-ph" style="height:240px;">
-        <span class="ph-icon">⚙️</span>
-        <span>Fotó: toll2.jpg</span>
-      </div>
-      <div class="overlay">
-        <div class="overlay-title">90% Wolfram Barrel</div>
-        <div class="overlay-tag">Wolfram</div>
-      </div>
-      <div class="overlay-zoom">🔍</div>
-      <span style="display:none" class="lb-title">90% Wolfram Barrel</span>
-      <span style="display:none" class="lb-cat">Wolfram</span>
-    </div>
-
-    <div class="gallery-item" data-category="ajandek" onclick="openLightbox(this)">
-      <div class="gallery-ph" style="height:280px;">
-        <span class="ph-icon">🎁</span>
-        <span>Fotó: toll3.jpg</span>
-      </div>
-      <div class="overlay">
-        <div class="overlay-title">Ajándék Szett Díszdobozban</div>
-        <div class="overlay-tag">Ajándék csomag</div>
-      </div>
-      <div class="overlay-zoom">🔍</div>
-      <span style="display:none" class="lb-title">Ajándék Szett Díszdobozban</span>
-      <span style="display:none" class="lb-cat">Ajándék csomag</span>
-    </div>
-
     <div class="gallery-item" data-category="egyedi" onclick="openLightbox(this)">
-      <div class="gallery-ph" style="height:360px;">
-        <span class="ph-icon">💎</span>
-        <span>Fotó: toll4.jpg</span>
-      </div>
+      <img src="kepek/IMG_6858.jpeg" alt="Arsenal logós darts szett" style="width:100%; display:block;" />
       <div class="overlay">
-        <div class="overlay-title">Fekete Anodizált Barrel</div>
+        <div class="overlay-title">Arsenal Logós Szett</div>
         <div class="overlay-tag">Egyedi dizájn</div>
       </div>
       <div class="overlay-zoom">🔍</div>
-      <span style="display:none" class="lb-title">Fekete Anodizált Barrel</span>
+      <span style="display:none" class="lb-title">Arsenal Logós Szett</span>
+      <span style="display:none" class="lb-cat">Egyedi dizájn</span>
+    </div>
+
+    <div class="gallery-item" data-category="egyedi" onclick="openLightbox(this)">
+      <img src="kepek/IMG_6859.jpeg" alt="Ferencváros logós darts toll szett" style="width:100%; display:block;" />
+      <div class="overlay">
+        <div class="overlay-title">FTC Logós Darts Szett</div>
+        <div class="overlay-tag">Egyedi dizájn</div>
+      </div>
+      <div class="overlay-zoom">🔍</div>
+      <span style="display:none" class="lb-title">FTC Logós Darts Szett</span>
       <span style="display:none" class="lb-cat">Egyedi dizájn</span>
     </div>
 
     <div class="gallery-item" data-category="gravir" onclick="openLightbox(this)">
-      <div class="gallery-ph" style="height:260px;">
-        <span class="ph-icon">🏆</span>
-        <span>Fotó: toll5.jpg</span>
-      </div>
+      <img src="kepek/IMG_6860.jpeg" alt="Tózsoooo egyedi gravírozott flight" style="width:100%; display:block;" />
       <div class="overlay">
-        <div class="overlay-title">Bajnoki Emlék Gravír</div>
+        <div class="overlay-title">Egyedi Névgravír – Flight</div>
         <div class="overlay-tag">Gravírozás</div>
       </div>
       <div class="overlay-zoom">🔍</div>
-      <span style="display:none" class="lb-title">Bajnoki Emlék Gravír</span>
-      <span style="display:none" class="lb-cat">Gravírozás</span>
-    </div>
-
-    <div class="gallery-item" data-category="wolfram" onclick="openLightbox(this)">
-      <div class="gallery-ph" style="height:300px;">
-        <span class="ph-icon">⚡</span>
-        <span>Fotó: toll6.jpg</span>
-      </div>
-      <div class="overlay">
-        <div class="overlay-title">Slim 85% Wolfram</div>
-        <div class="overlay-tag">Wolfram</div>
-      </div>
-      <div class="overlay-zoom">🔍</div>
-      <span style="display:none" class="lb-title">Slim 85% Wolfram</span>
-      <span style="display:none" class="lb-cat">Wolfram</span>
-    </div>
-
-    <div class="gallery-item" data-category="ajandek" onclick="openLightbox(this)">
-      <div class="gallery-ph" style="height:220px;">
-        <span class="ph-icon">🎄</span>
-        <span>Fotó: toll7.jpg</span>
-      </div>
-      <div class="overlay">
-        <div class="overlay-title">Karácsonyi Szett</div>
-        <div class="overlay-tag">Ajándék csomag</div>
-      </div>
-      <div class="overlay-zoom">🔍</div>
-      <span style="display:none" class="lb-title">Karácsonyi Szett</span>
-      <span style="display:none" class="lb-cat">Ajándék csomag</span>
-    </div>
-
-    <div class="gallery-item" data-category="egyedi" onclick="openLightbox(this)">
-      <div class="gallery-ph" style="height:340px;">
-        <span class="ph-icon">🔥</span>
-        <span>Fotó: toll8.jpg</span>
-      </div>
-      <div class="overlay">
-        <div class="overlay-title">Rozé Arany Bevonat</div>
-        <div class="overlay-tag">Egyedi dizájn</div>
-      </div>
-      <div class="overlay-zoom">🔍</div>
-      <span style="display:none" class="lb-title">Rozé Arany Bevonat</span>
-      <span style="display:none" class="lb-cat">Egyedi dizájn</span>
-    </div>
-
-    <div class="gallery-item" data-category="gravir" onclick="openLightbox(this)">
-      <div class="gallery-ph" style="height:280px;">
-        <span class="ph-icon">🦅</span>
-        <span>Fotó: toll9.jpg</span>
-      </div>
-      <div class="overlay">
-        <div class="overlay-title">Sas Motívum Gravír</div>
-        <div class="overlay-tag">Gravírozás</div>
-      </div>
-      <div class="overlay-zoom">🔍</div>
-      <span style="display:none" class="lb-title">Sas Motívum Gravír</span>
+      <span style="display:none" class="lb-title">Egyedi Névgravír – Flight</span>
       <span style="display:none" class="lb-cat">Gravírozás</span>
     </div>
 
