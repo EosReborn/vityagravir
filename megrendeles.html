@@ -5,222 +5,125 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Megrendelés – Vitya Gravír</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <style>
-    /* ---- PAGE HERO ---- */
-    .order-hero {
-      padding: 100px 48px 64px;
-      max-width: 1200px;
+    .order-wrap {
+      max-width: 600px;
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
+      padding: 100px 24px 80px;
     }
 
-    .order-hero-info h1 { margin-bottom: 20px; }
-    .order-hero-info p { font-size: 15px; margin-bottom: 16px; }
+    .order-intro { margin-bottom: 48px; }
+    .order-intro h1 { margin-bottom: 14px; }
+    .order-intro p { font-size: 15px; max-width: 460px; }
 
-    .info-cards {
+    .simple-form {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin-top: 32px;
+      gap: 18px;
     }
-    .info-card {
+
+    .field {
       display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px 18px;
-      transition: border-color 0.2s;
+      flex-direction: column;
+      gap: 7px;
     }
-    .info-card:hover { border-color: rgba(201,168,76,0.3); }
-    .info-card-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
-    .info-card-text h4 {
-      font-family: 'Playfair Display', serif;
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--white);
-      margin-bottom: 4px;
-    }
-    .info-card-text p { font-size: 13px; }
-
-    /* ---- FORM ---- */
-    .order-form-wrap { padding-top: 8px; }
-
-    .form-section {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      overflow: hidden;
-      margin-bottom: 20px;
-      transition: border-color 0.2s;
-    }
-    .form-section:focus-within { border-color: rgba(201,168,76,0.35); }
-
-    .form-section-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 14px 22px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(201,168,76,0.04);
-    }
-    .fs-num {
-      width: 26px; height: 26px;
-      border-radius: 50%;
-      background: var(--gold);
-      color: var(--bg);
-      font-size: 12px;
-      font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .fs-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 0.3px;
-    }
-
-    .form-section-body {
-      padding: 22px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-    .form-section-body.cols-1 { grid-template-columns: 1fr; }
-
-    .field { display: flex; flex-direction: column; gap: 6px; }
-    .field.full { grid-column: 1 / -1; }
 
     label {
       font-size: 11px;
       font-weight: 600;
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
       text-transform: uppercase;
       color: var(--muted);
     }
 
-    input[type=text], input[type=email], input[type=tel],
-    input[type=number], input[type=date], textarea, select {
-      background: rgba(255,255,255,0.04);
+    input, textarea {
+      background: var(--bg2);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 9px;
       color: var(--white);
       font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      padding: 11px 14px;
-      transition: border-color 0.2s, background 0.2s;
+      font-size: 15px;
+      padding: 13px 16px;
       outline: none;
       width: 100%;
+      transition: border-color 0.2s, background 0.2s;
     }
-    input:focus, textarea:focus, select:focus {
+    input:focus, textarea:focus {
       border-color: var(--gold);
       background: rgba(201,168,76,0.04);
     }
-    input.invalid { border-color: #c0392b !important; }
-    textarea { min-height: 90px; resize: vertical; line-height: 1.6; }
-    select option { background: var(--bg2); }
+    input.invalid { border-color: #c0392b; }
+    textarea { min-height: 110px; resize: vertical; line-height: 1.65; }
 
-    /* ---- OPTION BUTTONS ---- */
-    .option-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
 
-    .option-label {
+    .divider-label {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      cursor: pointer;
-      font-size: 13px;
+      gap: 12px;
       color: var(--muted);
-      transition: all 0.15s;
-      user-select: none;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin: 8px 0 -4px;
     }
-    .option-label:hover { border-color: rgba(201,168,76,0.4); color: var(--white); }
-    .option-label input { display: none; }
-    .option-label.selected {
-      background: rgba(201,168,76,0.12);
-      border-color: var(--gold);
-      color: var(--gold);
-    }
-    .opt-dot {
-      width: 14px; height: 14px;
-      border-radius: 50%;
-      border: 1.5px solid currentColor;
-      flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .option-label.selected .opt-dot::after {
+    .divider-label::before, .divider-label::after {
       content: '';
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--gold);
+      flex: 1;
+      height: 1px;
+      background: var(--border);
     }
-    .opt-sq { border-radius: 3px !important; }
-
-    /* ---- SUBMIT ---- */
-    .submit-area {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 20px;
-      padding-top: 8px;
-    }
-    .submit-note { font-size: 13px; color: var(--muted); }
 
     .btn-submit {
       background: var(--gold);
       color: var(--bg);
       border: none;
-      padding: 15px 40px;
-      font-family: 'Playfair Display', serif;
-      font-size: 16px;
-      font-weight: 700;
+      padding: 15px;
       border-radius: 9px;
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 700;
       cursor: pointer;
+      width: 100%;
+      margin-top: 8px;
       transition: background 0.2s, transform 0.1s;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 10px;
       letter-spacing: 0.3px;
     }
     .btn-submit:hover { background: var(--gold2); }
-    .btn-submit:active { transform: scale(0.98); }
+    .btn-submit:active { transform: scale(0.99); }
     .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    .spinner {
-      width: 16px; height: 16px;
-      border: 2px solid rgba(11,12,14,0.3);
-      border-top-color: var(--bg);
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      display: none;
-    }
-    .btn-submit.loading .spinner { display: block; }
-    .btn-submit.loading .btn-text { opacity: 0.7; }
-    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ---- EMAILJS CONFIG BOX ---- */
+    .form-note {
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* EMAILJS config */
     .config-box {
       background: rgba(201,168,76,0.06);
       border: 1px dashed rgba(201,168,76,0.35);
       border-radius: 12px;
-      padding: 22px 24px;
-      margin-bottom: 24px;
+      padding: 20px 22px;
+      margin-bottom: 36px;
     }
     .config-box h3 {
       font-family: 'Playfair Display', serif;
-      font-size: 16px;
+      font-size: 15px;
       color: var(--gold);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
-    .config-box p { font-size: 13px; line-height: 1.75; }
+    .config-box p { font-size: 13px; line-height: 1.7; }
     .config-box code {
       background: rgba(0,0,0,0.4);
       padding: 1px 6px;
@@ -233,15 +136,15 @@
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 10px;
-      margin-top: 14px;
-    }
-    .config-fields input { font-size: 12px; padding: 9px 12px; }
-    .config-save {
       margin-top: 12px;
+    }
+    .config-fields input { font-size: 12px; padding: 8px 12px; }
+    .config-save {
+      margin-top: 10px;
       background: transparent;
       border: 1px solid var(--gold);
       color: var(--gold);
-      padding: 8px 22px;
+      padding: 8px 20px;
       border-radius: 7px;
       cursor: pointer;
       font-family: 'DM Sans', sans-serif;
@@ -250,16 +153,9 @@
       transition: background 0.2s;
     }
     .config-save:hover { background: rgba(201,168,76,0.08); }
-    .config-vars {
-      margin-top: 12px;
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 2;
-    }
 
-    @media (max-width: 900px) {
-      .order-hero { grid-template-columns: 1fr; padding: 80px 24px 48px; gap: 40px; }
-      .form-section-body { grid-template-columns: 1fr; }
+    @media (max-width: 560px) {
+      .row-2 { grid-template-columns: 1fr; }
       .config-fields { grid-template-columns: 1fr; }
     }
   </style>
@@ -287,249 +183,80 @@
 </div>
 
 <div class="page">
-  <div class="order-hero">
+  <div class="order-wrap">
 
-    <!-- LEFT: INFO -->
-    <div class="order-hero-info">
-      <div class="section-tag reveal">Megrendelés</div>
-      <h1 class="reveal reveal-delay-1">A te <em>egyedi</em><br>tollad</h1>
-      <p class="reveal reveal-delay-2">Töltsd ki az űrlapot – minden részletet velünk egyeztethetsz. 24 órán belül visszaigazolom a megrendelést.</p>
-
-      <div class="info-cards reveal reveal-delay-3">
-        <div class="info-card">
-          <div class="info-card-icon">⏱️</div>
-          <div class="info-card-text">
-            <h4>Átfutási idő</h4>
-            <p>Általában 5–10 munkanap az elkészítés. Sürgős esetben egyeztetünk.</p>
-          </div>
-        </div>
-        <div class="info-card">
-          <div class="info-card-icon">📧</div>
-          <div class="info-card-text">
-            <h4>Visszaigazolás</h4>
-            <p>Az elküldés után 24 órán belül e-mailben visszaigazolom a megrendelést és az árat.</p>
-          </div>
-        </div>
-        <div class="info-card">
-          <div class="info-card-icon">💬</div>
-          <div class="info-card-text">
-            <h4>Személyes egyeztetés</h4>
-            <p>Minden esetben személyesen egyeztetünk a részletekről mielőtt elkezdődik a gyártás.</p>
-          </div>
-        </div>
-        <div class="info-card">
-          <div class="info-card-icon">🚚</div>
-          <div class="info-card-text">
-            <h4>Szállítás</h4>
-            <p>Futárral az egész országba, vagy személyes átvétel is lehetséges.</p>
-          </div>
-        </div>
-      </div>
+    <div class="order-intro reveal">
+      <div class="section-tag">Megrendelés</div>
+      <h1>Rendeld meg<br><em>egyedi tolladat</em></h1>
+      <p>Töltsd ki az alábbi mezőket – 24 órán belül felveszem veled a kapcsolatot az ár és részletek egyeztetéséhez.</p>
     </div>
 
-    <!-- RIGHT: FORM -->
-    <div class="order-form-wrap reveal reveal-delay-2">
+    <!-- FORMSPREE INSTRUCTION -->
+    <div class="config-box reveal">
+      <h3>⚙️ Formspree beállítás (egyszer kell)</h3>
+      <p>
+        1. Regisztrálj ingyen: <code>formspree.io</code><br>
+        2. Hozz létre egy új Form-ot → kapsz egy linket: <code>https://formspree.io/f/XXXXXXXX</code><br>
+        3. A <code>megrendeles.html</code>-ben cseréld le az <code>YOUR_FORM_ID</code> részt erre az ID-re<br>
+        4. Kész – minden megrendelés e-mailben érkezik!
+      </p>
+    </div>
 
-      <!-- EMAILJS CONFIG -->
-      <div class="config-box">
-        <h3>⚙️ EmailJS beállítás</h3>
-        <p>
-          1. Regisztrálj ingyen: <code>emailjs.com</code><br>
-          2. Hozz létre egy Gmail Service-t → <code>Service ID</code><br>
-          3. Hozz létre Template-t (változók lent) → <code>Template ID</code><br>
-          4. Fiók → <code>Public Key</code> → Mentés
-        </p>
-        <div class="config-fields">
-          <input id="cfgService" placeholder="Service ID" />
-          <input id="cfgTemplate" placeholder="Template ID" />
-          <input id="cfgPublic" placeholder="Public Key" />
+    <form class="simple-form reveal" id="orderForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+
+      <!-- KAPCSOLAT -->
+      <div class="divider-label">Kapcsolat</div>
+
+      <div class="field">
+        <label>Teljes név *</label>
+        <input type="text" name="nev" required placeholder="Kovács János" />
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label>E-mail *</label>
+          <input type="email" name="email" required placeholder="pelda@email.hu" />
         </div>
-        <button class="config-save" onclick="saveConfig()">💾 Mentés</button>
-        <div class="config-vars">
-          Template változók: <code>{{nev}}</code> <code>{{email}}</code> <code>{{telefon}}</code> <code>{{szallitasi_cim}}</code> <code>{{toll_tipus}}</code> <code>{{darabszam}}</code> <code>{{anyag}}</code> <code>{{suly}}</code> <code>{{fogoresz}}</code> <code>{{hegy}}</code> <code>{{gravir_szoveg}}</code> <code>{{betutipus}}</code> <code>{{logo}}</code> <code>{{gravir_hely}}</code> <code>{{csomagolas}}</code> <code>{{szallitas}}</code> <code>{{hataridő}}</code> <code>{{fizetes}}</code> <code>{{megjegyzes}}</code>
+        <div class="field">
+          <label>Telefon *</label>
+          <input type="tel" name="telefon" required placeholder="+36 30 123 4567" />
         </div>
       </div>
 
-      <form id="orderForm" onsubmit="return false;">
+      <div class="field">
+        <label>Szállítási cím</label>
+        <input type="text" name="cim" placeholder="1234 Budapest, Példa u. 1." />
+      </div>
 
-        <!-- 1 -->
-        <div class="form-section">
-          <div class="form-section-header">
-            <div class="fs-num">1</div>
-            <div class="fs-title">Személyes adatok</div>
-          </div>
-          <div class="form-section-body">
-            <div class="field">
-              <label>Teljes név *</label>
-              <input type="text" name="nev" required placeholder="Kovács János" />
-            </div>
-            <div class="field">
-              <label>Telefonszám *</label>
-              <input type="tel" name="telefon" required placeholder="+36 30 123 4567" />
-            </div>
-            <div class="field">
-              <label>E-mail cím *</label>
-              <input type="email" name="email" required placeholder="pelda@email.hu" />
-            </div>
-            <div class="field">
-              <label>Szállítási cím</label>
-              <input type="text" name="szallitasi_cim" placeholder="1234 Budapest, Példa u. 1." />
-            </div>
-          </div>
+      <!-- TOLL -->
+      <div class="divider-label">A toll</div>
+
+      <div class="row-2">
+        <div class="field">
+          <label>Toll típusa *</label>
+          <input type="text" name="toll_tipus" required placeholder="pl. Acél, Soft, Wolfram..." />
         </div>
-
-        <!-- 2 -->
-        <div class="form-section">
-          <div class="form-section-header">
-            <div class="fs-num">2</div>
-            <div class="fs-title">Toll paraméterek</div>
-          </div>
-          <div class="form-section-body">
-            <div class="field">
-              <label>Toll típusa *</label>
-              <input type="text" name="toll_tipus" required placeholder="pl. Soft, Acél hegyű, Wolfram..." />
-            </div>
-            <div class="field">
-              <label>Darabszám *</label>
-              <input type="number" name="darabszam" required min="1" placeholder="3" />
-            </div>
-            <div class="field">
-              <label>Anyag / Szín</label>
-              <input type="text" name="anyag" placeholder="pl. Wolfram, fekete, ezüst..." />
-            </div>
-            <div class="field">
-              <label>Súly (gramm)</label>
-              <input type="text" name="suly" placeholder="pl. 22g" />
-            </div>
-            <div class="field full">
-              <label>Fogórész kialakítás</label>
-              <div class="option-group" data-name="fogoresz" data-type="radio">
-                <label class="option-label"><input type="radio" value="Sima"><div class="opt-dot"></div>Sima</label>
-                <label class="option-label"><input type="radio" value="Rovátkolt"><div class="opt-dot"></div>Rovátkolt</label>
-                <label class="option-label"><input type="radio" value="Egyéni"><div class="opt-dot"></div>Egyéni</label>
-              </div>
-              <input type="hidden" name="fogoresz" id="fogoresz_val" />
-            </div>
-            <div class="field full">
-              <label>Hegy típusa</label>
-              <div class="option-group" data-name="hegy" data-type="radio">
-                <label class="option-label"><input type="radio" value="Acél"><div class="opt-dot"></div>Acél</label>
-                <label class="option-label"><input type="radio" value="Soft"><div class="opt-dot"></div>Soft</label>
-                <label class="option-label"><input type="radio" value="Cserélhető"><div class="opt-dot"></div>Cserélhető</label>
-              </div>
-              <input type="hidden" name="hegy" id="hegy_val" />
-            </div>
-          </div>
+        <div class="field">
+          <label>Darabszám *</label>
+          <input type="number" name="darabszam" required min="1" max="99" placeholder="3" />
         </div>
+      </div>
 
-        <!-- 3 -->
-        <div class="form-section">
-          <div class="form-section-header">
-            <div class="fs-num">3</div>
-            <div class="fs-title">Gravírozás</div>
-          </div>
-          <div class="form-section-body cols-1">
-            <div class="field">
-              <label>Gravírozandó szöveg</label>
-              <input type="text" name="gravir_szoveg" placeholder="pl. 'Pista – 180!'" />
-            </div>
-            <div class="field">
-              <label>Betűtípus / Stílus</label>
-              <div class="option-group" data-name="betutipus" data-type="radio">
-                <label class="option-label"><input type="radio" value="Nyomtatott"><div class="opt-dot"></div>Nyomtatott</label>
-                <label class="option-label"><input type="radio" value="Dőlt"><div class="opt-dot"></div>Dőlt</label>
-                <label class="option-label"><input type="radio" value="Kézírásos"><div class="opt-dot"></div>Kézírásos</label>
-                <label class="option-label"><input type="radio" value="Egyéni minta"><div class="opt-dot"></div>Egyéni minta</label>
-              </div>
-              <input type="hidden" name="betutipus" id="betutipus_val" />
-            </div>
-            <div class="field">
-              <label>Logó / Minta csatolása</label>
-              <div class="option-group" data-name="logo" data-type="radio">
-                <label class="option-label"><input type="radio" value="Nincs"><div class="opt-dot"></div>Nincs</label>
-                <label class="option-label"><input type="radio" value="Igen – e-mailben küldöm"><div class="opt-dot"></div>Igen (e-mailben küldöm)</label>
-              </div>
-              <input type="hidden" name="logo" id="logo_val" />
-            </div>
-            <div class="field">
-              <label>Gravírozás helye</label>
-              <div class="option-group" data-name="gravir_hely" data-type="checkbox">
-                <label class="option-label"><input type="checkbox" value="Barrel"><div class="opt-dot opt-sq"></div>Barrel</label>
-                <label class="option-label"><input type="checkbox" value="Shaft"><div class="opt-dot opt-sq"></div>Shaft</label>
-                <label class="option-label"><input type="checkbox" value="Flight"><div class="opt-dot opt-sq"></div>Flight</label>
-                <label class="option-label"><input type="checkbox" value="Egyéni"><div class="opt-dot opt-sq"></div>Egyéni</label>
-              </div>
-              <input type="hidden" name="gravir_hely" id="gravir_hely_val" />
-            </div>
-          </div>
-        </div>
+      <!-- MEGJEGYZÉS -->
+      <div class="divider-label">Egyéb</div>
 
-        <!-- 4 -->
-        <div class="form-section">
-          <div class="form-section-header">
-            <div class="fs-num">4</div>
-            <div class="fs-title">Csomagolás & Szállítás</div>
-          </div>
-          <div class="form-section-body">
-            <div class="field full">
-              <label>Csomagolás</label>
-              <div class="option-group" data-name="csomagolas" data-type="radio">
-                <label class="option-label"><input type="radio" value="Egyszerű doboz"><div class="opt-dot"></div>Egyszerű doboz</label>
-                <label class="option-label"><input type="radio" value="Díszdoboz"><div class="opt-dot"></div>Díszdoboz</label>
-                <label class="option-label"><input type="radio" value="Ajándékcsomagolás"><div class="opt-dot"></div>Ajándékcsomagolás</label>
-              </div>
-              <input type="hidden" name="csomagolas" id="csomagolas_val" />
-            </div>
-            <div class="field full">
-              <label>Szállítás módja</label>
-              <div class="option-group" data-name="szallitas" data-type="radio">
-                <label class="option-label"><input type="radio" value="Futár"><div class="opt-dot"></div>Futár</label>
-                <label class="option-label"><input type="radio" value="Személyes átvétel"><div class="opt-dot"></div>Személyes átvétel</label>
-              </div>
-              <input type="hidden" name="szallitas" id="szallitas_val" />
-            </div>
-            <div class="field">
-              <label>Kért határidő</label>
-              <input type="date" name="hataridő" />
-            </div>
-            <div class="field">
-              <label>Fizetés módja</label>
-              <select name="fizetes">
-                <option value="">– Válassz –</option>
-                <option>Előreutalás</option>
-                <option>Utánvét</option>
-                <option>Készpénz (személyes átvétel)</option>
-              </select>
-            </div>
-          </div>
-        </div>
+      <div class="field">
+        <label>Megjegyzés / egyedi kérés</label>
+        <textarea name="megjegyzes" placeholder="Gravírozandó szöveg, logó, szín, súly, ajándékcsomagolás – bármit írj ide..."></textarea>
+      </div>
 
-        <!-- 5 -->
-        <div class="form-section">
-          <div class="form-section-header">
-            <div class="fs-num">5</div>
-            <div class="fs-title">Egyéb megjegyzések</div>
-          </div>
-          <div class="form-section-body cols-1">
-            <div class="field">
-              <label>Megjegyzés, egyedi kérés</label>
-              <textarea name="megjegyzes" placeholder="Bármilyen egyedi kérés, referenciakép URL, stb..."></textarea>
-            </div>
-          </div>
-        </div>
+      <button type="submit" class="btn-submit">Elküldés →</button>
 
-        <div class="submit-area">
-          <span class="submit-note">* Kötelező mezők</span>
-          <button type="button" class="btn-submit" id="submitBtn" onclick="sendOrder()">
-            <div class="spinner"></div>
-            <span class="btn-text">Megrendelés elküldése →</span>
-          </button>
-        </div>
+      <p class="form-note">* Kötelező mező · 24 órán belül visszaigazolunk</p>
 
-      </form>
-    </div><!-- /form-wrap -->
-  </div><!-- /order-hero -->
-</div><!-- /page -->
+    </form>
+  </div>
+</div>
 
 <footer>
   <a href="index.html" class="footer-logo"><img src="kepek/logo.png" alt="Vitya Gravír" /></a>
@@ -544,79 +271,13 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="main.js"></script>
-<script>
-  // Config
-  function saveConfig() {
-    const s = document.getElementById('cfgService').value.trim();
-    const t = document.getElementById('cfgTemplate').value.trim();
-    const p = document.getElementById('cfgPublic').value.trim();
-    if (!s || !t || !p) { showToast('Töltsd ki mindhárom mezőt!', 'error'); return; }
-    localStorage.setItem('ejs_service', s);
-    localStorage.setItem('ejs_template', t);
-    localStorage.setItem('ejs_public', p);
-    emailjs.init(p);
-    showToast('✅ Konfiguráció mentve!', 'success');
-  }
-
-  (function loadConfig() {
-    const s = localStorage.getItem('ejs_service');
-    const t = localStorage.getItem('ejs_template');
-    const p = localStorage.getItem('ejs_public');
-    if (s) document.getElementById('cfgService').value = s;
-    if (t) document.getElementById('cfgTemplate').value = t;
-    if (p) { document.getElementById('cfgPublic').value = p; emailjs.init(p); }
-  })();
-
-  // Send
-  async function sendOrder() {
-    const form = document.getElementById('orderForm');
-    const btn  = document.getElementById('submitBtn');
-
-    let ok = true;
-    form.querySelectorAll('[required]').forEach(el => {
-      if (!el.value.trim()) { el.classList.add('invalid'); ok = false; }
-      else el.classList.remove('invalid');
-    });
-    if (!ok) { showToast('Töltsd ki a kötelező mezőket!', 'error'); return; }
-
-    const sid = localStorage.getItem('ejs_service');
-    const tid = localStorage.getItem('ejs_template');
-    if (!sid || !tid) { showToast('Állítsd be az EmailJS adatokat!', 'error'); return; }
-
-    btn.classList.add('loading');
-    btn.disabled = true;
-
-    const data = {};
-    new FormData(form).forEach((v, k) => { data[k] = v; });
-
-    try {
-      await emailjs.send(sid, tid, data);
-      showToast('✅ Megrendelés elküldve! 24 órán belül visszaigazolunk.', 'success');
-      form.reset();
-      document.querySelectorAll('.option-label.selected').forEach(l => l.classList.remove('selected'));
-      document.querySelectorAll('input[type=hidden]').forEach(i => i.value = '');
-    } catch (err) {
-      console.error(err);
-      showToast('❌ Küldési hiba. Ellenőrizd az EmailJS beállítást.', 'error');
-    } finally {
-      btn.classList.remove('loading');
-      btn.disabled = false;
-    }
-  }
-</script>
-
 <!-- COOKIE POPUP -->
 <div class="cookie-overlay" id="cookieOverlay">
   <div class="cookie-box">
     <div class="cookie-dart">🎯</div>
     <div class="cookie-content">
-      <div class="cookie-title">
-        Célba értünk! <span class="bull">Cookie</span>
-      </div>
-      <p class="cookie-text">
-        Ez az oldal sütiket (cookie-kat) használ, hogy a legjobb élményt nyújtsa – akárcsak egy jól beállított darts toll. Az elfogadással hozzájárulsz az analitikai és funkcionális sütik használatához.
-      </p>
+      <div class="cookie-title">Célba értünk! <span class="bull">Cookie</span></div>
+      <p class="cookie-text">Ez az oldal sütiket használ, hogy a legjobb élményt nyújtsa – akárcsak egy jól beállított darts toll.</p>
       <div class="cookie-btns">
         <button class="cookie-accept" onclick="acceptCookies()">✓ Elfogadom – Dupla Bull!</button>
         <button class="cookie-decline" onclick="declineCookies()">Csak szükséges</button>
@@ -625,26 +286,23 @@
     </div>
   </div>
 </div>
+
+<script src="main.js"></script>
 <script>
+  // Cookie
   (function() {
-    if (!localStorage.getItem("vg_cookie")) {
+    if (!localStorage.getItem('vg_cookie')) {
       setTimeout(function() {
-        var o = document.getElementById("cookieOverlay");
-        if (o) o.classList.add("show");
+        var o = document.getElementById('cookieOverlay');
+        if (o) o.classList.add('show');
       }, 1200);
     }
   })();
-  function acceptCookies() {
-    localStorage.setItem("vg_cookie", "accepted");
-    hideCookie();
-  }
-  function declineCookies() {
-    localStorage.setItem("vg_cookie", "declined");
-    hideCookie();
-  }
+  function acceptCookies() { localStorage.setItem('vg_cookie','accepted'); hideCookie(); }
+  function declineCookies() { localStorage.setItem('vg_cookie','declined'); hideCookie(); }
   function hideCookie() {
-    var o = document.getElementById("cookieOverlay");
-    if (o) { o.style.opacity = "0"; setTimeout(function(){ o.remove(); }, 400); }
+    var o = document.getElementById('cookieOverlay');
+    if (o) { o.style.opacity='0'; setTimeout(function(){ o.remove(); },400); }
   }
 </script>
 </body>
