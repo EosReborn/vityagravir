@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galéria – Vitya Gravír</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ---- HERO STRIP ---- */
+    .gallery-hero {
+      padding: 100px 48px 64px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .gallery-hero h1 { margin-bottom: 16px; }
+    .gallery-hero p { max-width: 520px; font-size: 16px; }
+
+    /* ---- FILTER BAR ---- */
+    .filter-bar {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 48px 48px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 9px 20px;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: rgba(201,168,76,0.4); color: var(--white); }
+    .filter-btn.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--bg);
+      font-weight: 600;
+    }
+
+    /* ---- MASONRY / GRID ---- */
+    .gallery-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 48px 80px;
+      columns: 3;
+      column-gap: 20px;
+    }
+
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      border: 1px solid var(--border);
+      transition: transform 0.3s, border-color 0.3s;
+      display: block;
+    }
+
+    .gallery-item:hover { transform: scale(1.02); border-color: rgba(201,168,76,0.4); }
+
+    .gallery-item img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* placeholder cards with different heights */
+    .gallery-ph {
+      background: var(--bg2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .gallery-ph .ph-icon { font-size: 36px; opacity: 0.3; }
+
+    .gallery-item .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(11,12,14,0.9) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 20px;
+    }
+    .gallery-item:hover .overlay { opacity: 1; }
+    .overlay-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .overlay-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .overlay-zoom {
+      position: absolute;
+      top: 16px; right: 16px;
+      width: 36px; height: 36px;
+      background: rgba(201,168,76,0.15);
+      border: 1px solid rgba(201,168,76,0.5);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      opacity: 0;
+      transform: scale(0.7);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .gallery-item:hover .overlay-zoom { opacity: 1; transform: scale(1); }
+
+    /* hidden items for filter */
+    .gallery-item.hidden {
+      display: none;
+    }
+
+    /* ---- LIGHTBOX ---- */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 800;
+      background: rgba(11,12,14,0.96);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .lightbox.open { opacity: 1; pointer-events: all; }
+    .lb-img {
+      max-width: 80vw;
+      max-height: 80vh;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      object-fit: contain;
+      transform: scale(0.9);
+      transition: transform 0.35s cubic-bezier(.34,1.56,.64,1);
+    }
+    .lightbox.open .lb-img { transform: scale(1); }
+    .lb-close {
+      position: absolute;
+      top: 32px; right: 40px;
+      font-size: 32px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color 0.2s;
+      line-height: 1;
+    }
+    .lb-close:hover { color: var(--gold); }
+    .lb-caption {
+      position: absolute;
+      bottom: 40px;
+      left: 50%; transform: translateX(-50%);
+      text-align: center;
+    }
+    .lb-caption strong {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      color: var(--white);
+      display: block;
+      margin-bottom: 4px;
+    }
+    .lb-caption span {
+      font-size: 12px;
+      color: var(--gold);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .lb-ph {
+      width: 60vw;
+      max-width: 700px;
+      aspect-ratio: 4/3;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      color: var(--muted);
+      transform: scale(0.9);
+      transition: transform 0.35s cubic-bezier(.34,1.56,.64,1);
+    }
+    .lightbox.open .lb-ph { transform: scale(1); }
+    .lb-ph .ph-icon { font-size: 64px; opacity: 0.2; }
+    .lb-ph span { font-size: 14px; }
+
+    @media (max-width: 900px) {
+      .gallery-grid { columns: 2; padding: 0 24px 60px; }
+      .gallery-hero, .filter-bar { padding-left: 24px; padding-right: 24px; }
+    }
+    @media (max-width: 560px) {
+      .gallery-grid { columns: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo"><span class="dart-icon">🎯</span> Vitya Gravír</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Főoldal</a></li>
+    <li><a href="rolam.html">Rólam</a></li>
+    <li><a href="galeria.html">Galéria</a></li>
+    <li><a href="megrendeles.html" class="nav-cta">Megrendelés</a></li>
+  </ul>
+  <div class="nav-burger"><span></span><span></span><span></span></div>
+</nav>
+<div class="nav-mobile">
+  <a href="index.html">Főoldal</a>
+  <a href="rolam.html">Rólam</a>
+  <a href="galeria.html">Galéria</a>
+  <a href="megrendeles.html">Megrendelés</a>
+</div>
+
+<div class="page">
+
+  <div class="gallery-hero">
+    <div class="section-tag reveal">Munkáim</div>
+    <h1 class="reveal reveal-delay-1">A <em>galéria</em></h1>
+    <p class="reveal reveal-delay-2">Minden toll egy saját történet. Lapozz a munkáim között – és képzeld el, milyen lenne a sajátod.</p>
+  </div>
+
+  <!-- FILTER -->
+  <div class="filter-bar reveal">
+    <button class="filter-btn active" data-filter="all">Összes</button>
+    <button class="filter-btn" data-filter="gravir">Gravírozás</button>
+    <button class="filter-btn" data-filter="wolfram">Wolfram</button>
+    <button class="filter-btn" data-filter="ajandek">Ajándék csomag</button>
+    <button class="filter-btn" data-filter="egyedi">Egyedi dizájn</button>
+  </div>
+
+  <!-- GALLERY GRID -->
+  <!--
+    KÉPEK HOZZÁADÁSA:
+    Tedd a képeket egy "kepek/" mappába.
+    Módosítsd a .gallery-ph elemeket <img> tagre:
+    <img src="kepek/toll1.jpg" alt="leírás" />
+    A data-category-t tartsd meg a szűréshez.
+  -->
+  <div class="gallery-grid" id="galleryGrid">
+
+    <div class="gallery-item" data-category="gravir" onclick="openLightbox(this)">
+      <div class="gallery-ph" style="height:320px;">
+        <span class="ph-icon">✍️</span>
+        <span>Fotó: toll1.jpg</span>
+      </div>
+      <div class="overlay">
+        <div class="overlay-title">Monogramos Barrel</div>
+        <div class="overlay-tag">Gravírozás</div>
+      </div>
+      <div class="overlay-zoom">🔍</div>
+      <span style="display:none" class="lb-title">Monogramos Barrel</span>
+      <span style="display:none" class="lb-cat">Gravírozás</span>
+    </div>
+
+    <div class="gallery-item" data-category="wolfram" onclick="openLightbox(this)">
+      <div class="gallery-ph" style="height:240px;">
+        <span class="ph-icon">⚙️</span>
+        <span>Fotó: toll2.jpg</span>
+      </div>
+      <div class="overlay">
+        <div class="overlay-title">90% Wolfram Barrel</div>
+        <div class="overlay-tag">Wolfram</div>
+      </div>
+      <div class="overlay-zoom">🔍</div>
+      <span style="display:none" class="lb-title">90% Wolfram Barrel</span>
+      <span style="display:none" class="lb-cat">Wolfram</span>
+    </div>
+
+    <div class="gallery-item" data-category="ajandek" onclick="openLightbox(this)">
+      <div class="gallery-ph" style="height:280px;">
+        <span class="ph-icon">🎁</span>
+        <span>Fotó: toll3.jpg</span>
+      </div>
+      <div class="overlay">
+        <div class="overlay-title">Ajándék Szett Díszdobozban</div>
+        <div class="overlay-tag">Ajándék csomag</div>
+      </div>
+      <div class="overlay-zoom">🔍</div>
+      <span style="display:none" class="lb-title">Ajándék Szett Díszdobozban</span>
+      <span style="display:none" class="lb-cat">Ajándék csomag</span>
+    </div>
+
+    <div class="gallery-item" data-category="egyedi" onclick="openLightbox(this)">
+      <div class="gallery-ph" style="height:360px;">
+        <span class="ph-icon">💎</span>
+        <span>Fotó: toll4.jpg</span>
+      </div>
+      <div class="overlay">
+        <div class="overlay-title">Fekete Anodizált Barrel</div>
+        <div class="overlay-tag">Egyedi dizájn</div>
+      </div>
+      <div class="overlay-zoom">🔍</div>
+      <span style="display:none" class="lb-title">Fekete Anodizált Barrel</span>
+      <span style="display:none" class="lb-cat">Egyedi dizájn</span>
+    </div>
+
+    <div class="gallery-item" data-category="gravir" onclick="openLightbox(this)">
+      <div class="gallery-ph" style="height:260px;">
+        <span class="ph-icon">🏆</span>
+        <span>Fotó: toll5.jpg</span>
+      </div>
+      <div class="overlay">
+        <div class="overlay-title">Bajnoki Emlék Gravír</div>
+        <div class="overlay-tag">Gravírozás</div>
+      </div>
+      <div class="overlay-zoom">🔍</div>
+      <span style="display:none" class="lb-title">Bajnoki Emlék Gravír</span>
+      <span style="display:none" class="lb-cat">Gravírozás</span>
+    </div>
+
+    <div class="gallery-item" data-category="wolfram" onclick="openLightbox(this)">
+      <div class="gallery-ph" style="height:300px;">
+        <span class="ph-icon">⚡</span>
+        <span>Fotó: toll6.jpg</span>
+      </div>
+      <div class="overlay">
+        <div class="overlay-title">Slim 85% Wolfram</div>
+        <div class="overlay-tag">Wolfram</div>
+      </div>
+      <div class="overlay-zoom">🔍</div>
+      <span style="display:none" class="lb-title">Slim 85% Wolfram</span>
+      <span style="display:none" class="lb-cat">Wolfram</span>
+    </div>
+
+    <div class="gallery-item" data-category="ajandek" onclick="openLightbox(this)">
+      <div class="gallery-ph" style="height:220px;">
+        <span class="ph-icon">🎄</span>
+        <span>Fotó: toll7.jpg</span>
+      </div>
+      <div class="overlay">
+        <div class="overlay-title">Karácsonyi Szett</div>
+        <div class="overlay-tag">Ajándék csomag</div>
+      </div>
+      <div class="overlay-zoom">🔍</div>
+      <span style="display:none" class="lb-title">Karácsonyi Szett</span>
+      <span style="display:none" class="lb-cat">Ajándék csomag</span>
+    </div>
+
+    <div class="gallery-item" data-category="egyedi" onclick="openLightbox(this)">
+      <div class="gallery-ph" style="height:340px;">
+        <span class="ph-icon">🔥</span>
+        <span>Fotó: toll8.jpg</span>
+      </div>
+      <div class="overlay">
+        <div class="overlay-title">Rozé Arany Bevonat</div>
+        <div class="overlay-tag">Egyedi dizájn</div>
+      </div>
+      <div class="overlay-zoom">🔍</div>
+      <span style="display:none" class="lb-title">Rozé Arany Bevonat</span>
+      <span style="display:none" class="lb-cat">Egyedi dizájn</span>
+    </div>
+
+    <div class="gallery-item" data-category="gravir" onclick="openLightbox(this)">
+      <div class="gallery-ph" style="height:280px;">
+        <span class="ph-icon">🦅</span>
+        <span>Fotó: toll9.jpg</span>
+      </div>
+      <div class="overlay">
+        <div class="overlay-title">Sas Motívum Gravír</div>
+        <div class="overlay-tag">Gravírozás</div>
+      </div>
+      <div class="overlay-zoom">🔍</div>
+      <span style="display:none" class="lb-title">Sas Motívum Gravír</span>
+      <span style="display:none" class="lb-cat">Gravírozás</span>
+    </div>
+
+  </div>
+
+  <!-- CTA -->
+  <div style="text-align:center; padding: 0 48px 100px; max-width:1200px; margin:0 auto;" class="reveal">
+    <div class="section-tag" style="justify-content:center; display:flex;">Tetszik amit látsz?</div>
+    <h2 style="margin-bottom:16px;">Rendeld meg a<br><em>sajátodat</em></h2>
+    <p style="margin-bottom:36px; max-width:420px; margin-left:auto; margin-right:auto;">A galériában látott minták csak inspiráció – a te tolladat teljesen az elképzeléseid szerint készítem el.</p>
+    <a href="megrendeles.html" class="btn btn-gold">Megrendelés →</a>
+  </div>
+
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lb-close" onclick="closeLightbox()">✕</div>
+  <div class="lb-ph" id="lbContent">
+    <span class="ph-icon">🎯</span>
+    <span id="lbText">Ide kerül a kép</span>
+  </div>
+  <div class="lb-caption">
+    <strong id="lbTitle"></strong>
+    <span id="lbCat"></span>
+  </div>
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo">🎯 Vitya Gravír</a>
+  <ul class="footer-links">
+    <li><a href="index.html">Főoldal</a></li>
+    <li><a href="rolam.html">Rólam</a></li>
+    <li><a href="galeria.html">Galéria</a></li>
+    <li><a href="megrendeles.html">Megrendelés</a></li>
+  </ul>
+  <p>© 2025 Vitya Gravír. Minden jog fenntartva.</p>
+</footer>
+
+<script src="main.js"></script>
+<script>
+  // ---- FILTER ----
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      document.querySelectorAll('.gallery-item').forEach(item => {
+        if (f === 'all' || item.dataset.category === f) {
+          item.classList.remove('hidden');
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // ---- LIGHTBOX ----
+  function openLightbox(el) {
+    const lb = document.getElementById('lightbox');
+    const title = el.querySelector('.lb-title').textContent;
+    const cat = el.querySelector('.lb-cat').textContent;
+    const img = el.querySelector('img');
+    const content = document.getElementById('lbContent');
+
+    document.getElementById('lbTitle').textContent = title;
+    document.getElementById('lbCat').textContent = cat;
+
+    if (img) {
+      content.outerHTML = `<img class="lb-img" id="lbContent" src="${img.src}" alt="${title}" />`;
+    } else {
+      // placeholder
+      content.innerHTML = `<span class="ph-icon" style="font-size:64px;opacity:0.2;">🎯</span><span>${title}</span>`;
+    }
+
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox(e) {
+    if (e && e.target !== document.getElementById('lightbox') && !e.target.classList.contains('lb-close')) return;
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox({ target: document.getElementById('lightbox') }); });
+</script>
+</body>
+</html>

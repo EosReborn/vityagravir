@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rólam – Vitya Gravír</title>
+  <meta name="description" content="Megismerkedhetsz Vityával – a darts toll készítő és gravírozó mesterrel." />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ---- PAGE HERO ---- */
+    .page-hero {
+      padding: 100px 48px 72px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .page-hero-text .section-tag { margin-bottom: 16px; }
+    .page-hero-text h1 { margin-bottom: 24px; font-size: clamp(40px, 5vw, 72px); }
+    .page-hero-text p { font-size: 17px; line-height: 1.8; margin-bottom: 16px; }
+
+    .page-hero-img {
+      position: relative;
+    }
+    .photo-placeholder {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 14px;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+    .photo-placeholder .ph-big { font-size: 64px; opacity: 0.25; }
+    .photo-placeholder .ph-hint { font-size: 12px; opacity: 0.5; }
+
+    /* decorative corner */
+    .photo-deco {
+      position: absolute;
+      top: -16px; right: -16px;
+      width: 80px; height: 80px;
+      border-top: 2px solid var(--gold);
+      border-right: 2px solid var(--gold);
+      border-radius: 0 14px 0 0;
+    }
+    .photo-deco2 {
+      position: absolute;
+      bottom: -16px; left: -16px;
+      width: 80px; height: 80px;
+      border-bottom: 2px solid var(--gold);
+      border-left: 2px solid var(--gold);
+      border-radius: 0 0 0 14px;
+    }
+    .badge-craft {
+      position: absolute;
+      bottom: 24px; right: -24px;
+      background: var(--gold);
+      color: var(--bg);
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.4;
+      text-align: center;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+    }
+    .badge-craft strong { display: block; font-family: 'Playfair Display', serif; font-size: 20px; }
+
+    /* ---- STORY SECTION ---- */
+    .story-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 48px 100px;
+    }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 60px;
+      margin-top: 60px;
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .tl-item {
+      display: flex;
+      gap: 20px;
+      padding-bottom: 36px;
+      position: relative;
+    }
+
+    .tl-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 19px; top: 40px;
+      width: 2px;
+      bottom: 0;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+
+    .tl-dot {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      background: var(--bg2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tl-text h3 {
+      font-size: 16px;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .tl-text .tl-year {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    .tl-text p { font-size: 14px; }
+
+    .story-text h2 { margin-bottom: 24px; }
+    .story-text p { margin-bottom: 18px; font-size: 15px; }
+
+    /* ---- VALUES ---- */
+    .values-section {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .values-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 48px;
+    }
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      margin-top: 56px;
+      background: var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .value-item {
+      background: var(--bg2);
+      padding: 36px 28px;
+      transition: background 0.3s;
+    }
+    .value-item:hover { background: var(--bg3); }
+    .value-icon { font-size: 32px; margin-bottom: 16px; }
+    .value-item h3 { font-size: 17px; margin-bottom: 10px; }
+    .value-item p { font-size: 13px; }
+
+    /* ---- PROCESS ---- */
+    .process-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px 48px;
+    }
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 60px;
+    }
+    .process-step {
+      position: relative;
+    }
+    .process-step:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      top: 28px;
+      right: -16px;
+      color: var(--gold);
+      font-size: 20px;
+      font-weight: 300;
+    }
+    .step-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 52px;
+      font-weight: 900;
+      color: var(--gold-dim);
+      line-height: 1;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .step-num::after {
+      content: attr(data-n);
+      position: absolute;
+      top: 8px; left: 2px;
+      color: var(--gold);
+      font-size: 28px;
+    }
+    .process-step h3 { font-size: 17px; margin-bottom: 10px; }
+    .process-step p { font-size: 13px; }
+
+    /* CTA */
+    .rolam-cta {
+      max-width: 1200px;
+      margin: 0 auto 100px;
+      padding: 0 48px;
+      text-align: center;
+    }
+    .rolam-cta h2 { margin-bottom: 16px; }
+    .rolam-cta p { margin-bottom: 36px; }
+
+    @media (max-width: 900px) {
+      .page-hero { grid-template-columns: 1fr; padding: 80px 24px 48px; gap: 48px; }
+      .story-grid { grid-template-columns: 1fr; gap: 40px; }
+      .values-grid { grid-template-columns: 1fr 1fr; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .story-section, .process-section, .rolam-cta { padding-left: 24px; padding-right: 24px; }
+      .values-inner { padding: 60px 24px; }
+      .badge-craft { right: 0; bottom: 16px; }
+    }
+    @media (max-width: 560px) {
+      .values-grid { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr; }
+      .process-step::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo"><span class="dart-icon">🎯</span> Vitya Gravír</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Főoldal</a></li>
+    <li><a href="rolam.html">Rólam</a></li>
+    <li><a href="galeria.html">Galéria</a></li>
+    <li><a href="megrendeles.html" class="nav-cta">Megrendelés</a></li>
+  </ul>
+  <div class="nav-burger"><span></span><span></span><span></span></div>
+</nav>
+<div class="nav-mobile">
+  <a href="index.html">Főoldal</a>
+  <a href="rolam.html">Rólam</a>
+  <a href="galeria.html">Galéria</a>
+  <a href="megrendeles.html">Megrendelés</a>
+</div>
+
+<div class="page">
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="section-tag reveal">Rólam</div>
+      <h1 class="reveal reveal-delay-1">A mester<br>a <em>részletek</em><br>mögött</h1>
+      <p class="reveal reveal-delay-2">Vitya vagyok. Darts játékos, mesterember és szenvedélyes alkotó. Mindent, amit csinálok, kézzel és szívvel csinálok – a precizitás nem kompromisszum, hanem minimum.</p>
+      <p class="reveal reveal-delay-2">Az egyedi darts toll számomra nemcsak sport eszköz – hanem személyiség, stílus és büszkeség kérdése.</p>
+    </div>
+    <div class="page-hero-img reveal reveal-delay-3">
+      <div class="photo-deco"></div>
+      <div class="photo-deco2"></div>
+      <!--
+        IDE TEDD A KÉPEDET:
+        <img src="kepek/vitya.jpg" alt="Vitya" style="width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:20px;" />
+      -->
+      <div class="photo-placeholder">
+        <span class="ph-big">🧑‍🔧</span>
+        <span>A te fotód kerül ide</span>
+        <span class="ph-hint">Cseréld le az img tagre a megjegyzésben</span>
+      </div>
+      <div class="badge-craft"><strong>5+</strong>év<br>tapasztalat</div>
+    </div>
+  </div>
+
+  <!-- STORY -->
+  <div class="story-section">
+    <div class="story-grid">
+      <div class="timeline reveal">
+        <div class="section-tag">Idővonal</div>
+        <div style="height:24px;"></div>
+        <div class="tl-item">
+          <div class="tl-dot">🎯</div>
+          <div class="tl-text">
+            <div class="tl-year">2018</div>
+            <h3>Az első darts toll</h3>
+            <p>Elkezdtem darts játszani és rögtön tudtam – egyedi tollat akarok.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">⚙️</div>
+          <div class="tl-text">
+            <div class="tl-year">2019</div>
+            <h3>Gravírozás tanulása</h3>
+            <p>Professionális gravírozó gépet szereztem, elkezdtem kísérletezni fémeken.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">🔨</div>
+          <div class="tl-text">
+            <div class="tl-year">2021</div>
+            <h3>Első megrendelések</h3>
+            <p>Barátok, clubtagok kezdtek megrendelni. Az első 30 toll elment egy hónap alatt.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">🏆</div>
+          <div class="tl-text">
+            <div class="tl-year">2023–</div>
+            <h3>Vitya Gravír</h3>
+            <p>Megalapítottam a Vitya Gravír-t. Azóta 180+ egyedi toll hagyta el a műhelyt.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="story-text reveal reveal-delay-2">
+        <div class="section-tag">Történetem</div>
+        <h2>Honnan indult<br>az <em>álom?</em></h2>
+        <div class="gold-line"></div>
+        <p>Darts rajongóként mindig is zavart, hogy a boltokban kapható tollak „senkik" – nincs személyiségük, nincs karakterük. Ha valaki komolyan veszi a játékot, annak a toll is komoly kell legyen.</p>
+        <p>Éveket töltöttem azzal, hogy megtanulom a fémmegmunkálást, a gravírozást és azt, hogyan érzi magát egy jól kézre álló darts toll. Ma már pontosan tudom, mi tesz egy tollat tökéletessé.</p>
+        <p>Minden megrendelésnél személyesen egyeztetem a részleteket, mert a te tollad csakis a tied lehet – senki másé.</p>
+        <a href="megrendeles.html" class="btn btn-gold" style="margin-top:24px;">Rendeld meg a saját tolladat →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- VALUES -->
+  <div class="values-section">
+    <div class="values-inner">
+      <div class="reveal" style="text-align:center;">
+        <div class="section-tag" style="justify-content:center; display:flex;">Értékeim</div>
+        <h2>Miért <em>Vitya Gravír?</em></h2>
+      </div>
+      <div class="values-grid">
+        <div class="value-item reveal reveal-delay-1">
+          <div class="value-icon">🎯</div>
+          <h3>Precizitás</h3>
+          <p>Minden gravírozás, minden rovátkolt fogórész, minden hegy pontos. Nincsen „elég jó".</p>
+        </div>
+        <div class="value-item reveal reveal-delay-2">
+          <div class="value-icon">🤝</div>
+          <h3>Személyes kapcsolat</h3>
+          <p>Nincs webshop, nincs anonimitás. Velem személyesen egyeztetsz minden részletről.</p>
+        </div>
+        <div class="value-item reveal reveal-delay-3">
+          <div class="value-icon">⏱️</div>
+          <h3>Gyors átfutás</h3>
+          <p>Az átlagos elkészülési idő 5–10 munkanap. Sürgős megrendelésnél egyeztetünk.</p>
+        </div>
+        <div class="value-item reveal reveal-delay-4">
+          <div class="value-icon">💎</div>
+          <h3>Minőség garancia</h3>
+          <p>Ha nem vagy elégedett, megoldjuk. Ez nem marketing – ez ígéret.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROCESS -->
+  <div class="process-section">
+    <div class="reveal" style="text-align:center;">
+      <div class="section-tag" style="justify-content:center; display:flex;">Hogyan működik?</div>
+      <h2>A készítés <em>folyamata</em></h2>
+    </div>
+    <div class="process-steps">
+      <div class="process-step reveal reveal-delay-1">
+        <div class="step-num" data-n="01">01</div>
+        <h3>Egyeztetés</h3>
+        <p>Kitöltöd a megrendelőlapot – megbeszéljük a kívánt paramétereket, stílust, gravírt.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-2">
+        <div class="step-num" data-n="02">02</div>
+        <h3>Tervezés</h3>
+        <p>Elkészítem a tervrajzot és küldök egy preview-t jóváhagyásra e-mailben.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-3">
+        <div class="step-num" data-n="03">03</div>
+        <h3>Gyártás</h3>
+        <p>Kézzel megmunkálom, gravírozom, összeállítom a tollat. 5–10 munkanap.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-4">
+        <div class="step-num" data-n="04">04</div>
+        <h3>Kiszállítás</h3>
+        <p>Futárral vagy személyesen átveheted. Díszdobozban, gondosan csomagolva.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="rolam-cta reveal">
+    <div class="section-tag" style="justify-content:center; display:flex;">Következő lépés</div>
+    <h2>Kezdjük el<br><em>együtt</em></h2>
+    <p style="max-width:480px; margin:0 auto 36px;">Töltsd ki a megrendelőlapot, és 24 órán belül felveszem veled a kapcsolatot.</p>
+    <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+      <a href="megrendeles.html" class="btn btn-gold">Megrendelés →</a>
+      <a href="galeria.html" class="btn btn-outline">Galéria megtekintése</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo">🎯 Vitya Gravír</a>
+  <ul class="footer-links">
+    <li><a href="index.html">Főoldal</a></li>
+    <li><a href="rolam.html">Rólam</a></li>
+    <li><a href="galeria.html">Galéria</a></li>
+    <li><a href="megrendeles.html">Megrendelés</a></li>
+  </ul>
+  <p>© 2025 Vitya Gravír. Minden jog fenntartva.</p>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
