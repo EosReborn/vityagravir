@@ -270,7 +270,7 @@
 <div id="cursor-ring"></div>
 
 <nav>
-  <a href="index.html" class="nav-logo"><span class="dart-icon">🎯</span> Vitya Gravír</a>
+  <a href="index.html" class="nav-logo"><img src="kepek/logo.png" alt="Vitya Gravír" /></a>
   <ul class="nav-links">
     <li><a href="index.html">Főoldal</a></li>
     <li><a href="rolam.html">Rólam</a></li>
@@ -532,7 +532,7 @@
 </div><!-- /page -->
 
 <footer>
-  <a href="index.html" class="footer-logo">🎯 Vitya Gravír</a>
+  <a href="index.html" class="footer-logo"><img src="kepek/logo.png" alt="Vitya Gravír" /></a>
   <ul class="footer-links">
     <li><a href="index.html">Főoldal</a></li>
     <li><a href="rolam.html">Rólam</a></li>
@@ -603,6 +603,48 @@
       btn.classList.remove('loading');
       btn.disabled = false;
     }
+  }
+</script>
+
+<!-- COOKIE POPUP -->
+<div class="cookie-overlay" id="cookieOverlay">
+  <div class="cookie-box">
+    <div class="cookie-dart">🎯</div>
+    <div class="cookie-content">
+      <div class="cookie-title">
+        Célba értünk! <span class="bull">Cookie</span>
+      </div>
+      <p class="cookie-text">
+        Ez az oldal sütiket (cookie-kat) használ, hogy a legjobb élményt nyújtsa – akárcsak egy jól beállított darts toll. Az elfogadással hozzájárulsz az analitikai és funkcionális sütik használatához.
+      </p>
+      <div class="cookie-btns">
+        <button class="cookie-accept" onclick="acceptCookies()">✓ Elfogadom – Dupla Bull!</button>
+        <button class="cookie-decline" onclick="declineCookies()">Csak szükséges</button>
+      </div>
+      <div class="cookie-score">Sütink nem rontja el a dobásodat – ígérjük.</div>
+    </div>
+  </div>
+</div>
+<script>
+  (function() {
+    if (!localStorage.getItem("vg_cookie")) {
+      setTimeout(function() {
+        var o = document.getElementById("cookieOverlay");
+        if (o) o.classList.add("show");
+      }, 1200);
+    }
+  })();
+  function acceptCookies() {
+    localStorage.setItem("vg_cookie", "accepted");
+    hideCookie();
+  }
+  function declineCookies() {
+    localStorage.setItem("vg_cookie", "declined");
+    hideCookie();
+  }
+  function hideCookie() {
+    var o = document.getElementById("cookieOverlay");
+    if (o) { o.style.opacity = "0"; setTimeout(function(){ o.remove(); }, 400); }
   }
 </script>
 </body>
